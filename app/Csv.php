@@ -22,8 +22,8 @@ class Csv
   public function computeTotals(): void
   {
     foreach($this->csv as $row) {
-      $this->taxes += (int) $row[3];
-      $this->rates += (int) $row[4];
+      $this->rates += (int) $row[3];
+      $this->taxes += (int) $row[4];      
       $this->total += (int) $row[3] + (int) $row[4];
     }
 

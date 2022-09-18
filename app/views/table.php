@@ -1,6 +1,7 @@
-<!DOCTYPE htm>
-<htm lang="en">
-  <header>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Computed Table</title>
     <style>
       body {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -14,25 +15,32 @@
         border: 1px solid black;
       }
     </style>
-  </header>
+  </head>
   <body>
     <table>
       <thead>
         <tr>
-        <? foreach ($this->csv[0] as $header): ?>
+        <?php foreach ($this->csv[0] as $header): ?>
           <th><?= $header ?></th>
-        <? endforeach ?>
-        </th>
+        <?php endforeach ?>
+        </tr>
       </thead>
       <tbody>
-        <? for ($x = 1; $x <= count($this->csv) -1; $x++): ?>
+        <?php for ($x = 1; $x <= count($this->csv) -2; $x++): ?>
         <tr>
-          <? foreach ($this->csv[$x] as $column): ?>
+          <?php foreach ($this->csv[$x] as $column): ?>
           <td><?= $column ?></td>
-          <? endforeach ?>
+          <?php endforeach ?>
         </tr>
-        <? endfor ?>
+        <?php endfor ?>
       </tbody>
+      <tfoot>
+        <tr>
+          <?php foreach ($this->csv[count($this->csv)-1] as $footer): ?>
+            <th><?= $footer ?></th>
+          <?php endforeach ?>
+        </tr>
+      </tfoot>
     </table>
   </body>
-</htm>
+</html>

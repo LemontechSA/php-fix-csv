@@ -4,30 +4,37 @@ namespace App;
 
 class Csv
 {
-  private $csv = [];
-  private $rates = 0;
-  private $taxes = 0;
-  private $total = 0;
-
-  public function printTable(): void
+  private array $csv     = [];
+  private array $headers = [];
+    
+    public function printTable(): void
   {
     include('../app/views/table.php');
   }
 
   public function setFile(array $file): void
   {
-    $this->csv = array_map('str_getcsv', file($file['tmp_name']));
+    $this->csv     = array_map('str_getcsv', file($file['tmp_name']));
+    $this->headers = &$this->csv[0];
   }
 
   public function computeTotals(): void
   {
-    foreach($this->csv as $row) {
-      $this->taxes += (int) $row[3];
-      $this->rates += (int) $row[4];
-      $this->total += (int) $row[3] + (int) $row[4];
-    }
-
-    array_push($this->csv, ['', '', 'Subtotal', $this->rates, '']);
-    array_push($this->csv, ['', '', 'Total', $this->total, '']);
+      $taxes = $this->sumColumn('tax');
+      $rates = $this->sumColumn('rate');
+      $total = $taxes + $rates;
+      array_push($this->csv,
+          ['', '', 'Subtotal', $rates, $taxes],
+          ['', '', 'Total', '', $total]
+      );
+  }
+  
+  private function sumColumn(string $column): int
+  {
+      return array_sum(
+          array_slice(
+              array_column($this->csv, array_search($column, $this->headers)), 1
+          )
+      );
   }
 }
